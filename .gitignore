@@ -1,0 +1,7 @@
+../book_manager/.idea/
+__pycache__/
+uploads/
+*.db
+.env
+.DS_Store
+*.pyc

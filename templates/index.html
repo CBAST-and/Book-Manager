@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Manager</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">📚 Book Manager</h1>
+        <a class="btn btn-primary" href="/books/add">➕ Agregar libro</a>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <form method="GET" action="/books" class="mb-4 d-flex">
+        <input type="text"
+               name="search"
+               class="form-control me-2"
+               placeholder="Buscar..."
+               value="{{ search }}">
+        <button class="btn btn-primary">Buscar</button>
+    </form>
+
+    <!-- Lista de libros -->
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+
+                {% if book.CoverUrl %}
+                <img src="{{ book.CoverUrl }}" class="card-img-top" style="height: 280px; object-fit: cover;">
+                {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                     style="height: 280px; font-size: 1.3rem;">
+                    {{ book.Title }}
+                </div>
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ book.Title }}</h5>
+                    <p class="text-muted">{{ book.Author }}</p>
+
+                    {% if book.Description %}
+                    <p>{{ book.Description }}</p>
+                    {% endif %}
+
+                    {% if book.PdfUrl %}
+                    <a href="{{ book.PdfUrl }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        🔗 Ver Enlace
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="/books/edit/{{ book.Id }}" class="btn btn-warning btn-sm">✏️ Editar</a>
+
+                    <form action="/books/delete/{{ book.Id }}" method="POST">
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar este libro?')">
+                            🗑️ Eliminar
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>
